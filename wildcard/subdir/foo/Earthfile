@@ -1,0 +1,7 @@
+VERSION 0.8
+
+test:
+  FROM alpine
+  RUN echo "hello world 1"
+  RUN echo "hello world 1" > helloworld1
+  SAVE ARTIFACT helloworld1

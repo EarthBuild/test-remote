@@ -1,0 +1,29 @@
+VERSION --wildcard-builds 0.8
+
+wildcard-build:
+    FROM alpine
+    BUILD ./subdir/*+test
+
+wildcard-glob:
+    FROM alpine
+    BUILD ./subdir/b*[rz]+test
+
+wildcard-copy:
+    FROM alpine
+    COPY ./subdir/*+test/helloworld* .
+    DO +TEST --EXPECTED_COUNT=3
+
+wildcard-glob:
+    FROM alpine
+    COPY ./subdir/b*[rz]+test/helloworld* .
+    DO +TEST --EXPECTED_COUNT=2
+
+TEST:
+    FUNCTION
+    ARG --required EXPECTED_COUNT
+    LET files=$(ls helloworld*)
+    LET count=$(echo "$files"|wc -l)
+    RUN test $count -eq $EXPECTED_COUNT || (echo found $count files instead of $EXPECTED_COUNT && exit 1)
+    FOR f IN $files
+        RUN grep "hello world" $f
+    END
