@@ -13,7 +13,7 @@ wildcard-copy:
     COPY ./subdir/*+test/helloworld* .
     DO +TEST --EXPECTED_COUNT=3
 
-wildcard-glob:
+wildcard-copy-glob:
     FROM alpine
     COPY ./subdir/b*[rz]+test/helloworld* .
     DO +TEST --EXPECTED_COUNT=2
